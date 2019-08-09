@@ -18,3 +18,5 @@ examples/**/*.mom
 
 src/gui/__pycache__/
 
+
+\.build/

@@ -10,18 +10,18 @@
 #include "file_io/mom_file_reader.h"
 #include "file_io/mom_file_writer.h"
 
-#ifndef PARALLEL
+// #ifndef PARALLEL
 
-#include "solvers/mom/serial_mom/mom.h"
-#include "solvers/dgfm/serial_dgfm/dgfm.h"
-#include "solvers/cbfm/serial_cbfm/cbfm.h"
-#endif
+// #include "solvers/mom/serial_mom/mom.h"
+// #include "solvers/dgfm/serial_dgfm/dgfm.h"
+// #include "solvers/cbfm/serial_cbfm/cbfm.h"
+// #endif
 
-#ifdef PARALLEL
-// #include "solvers/mom/parallel_mom/mpi_mom.h"
-#include "solvers/dgfm/parallel_dgfm/mpi_dgfm.h"
-#include <mpi.h>
-#endif
+// #ifdef PARALLEL
+// // #include "solvers/mom/parallel_mom/mpi_mom.h"
+// #include "solvers/dgfm/parallel_dgfm/mpi_dgfm.h"
+// #include <mpi.h>
+// #endif
 
 //**********************************
 
@@ -64,14 +64,14 @@ int main(int argc, char **argv)
     }
     //----------------------------------------
 
-    #ifdef PARALLEL
-    MPI_Init(NULL, NULL);
-    int size;
-    int rank;
+    // #ifdef PARALLEL
+    // MPI_Init(NULL, NULL);
+    // int size;
+    // int rank;
 
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank); 
-    #endif
+    // MPI_Comm_size(MPI_COMM_WORLD, &size);
+    // MPI_Comm_rank(MPI_COMM_WORLD, &rank); 
+    // #endif
 
     // Read the .mom file
 
@@ -85,120 +85,120 @@ int main(int argc, char **argv)
     MoMFileReader reader(args::get(file_name_arg), domain_decomp);
 
     
-    // Create the array to store the MoM solution
-    std::complex<double> *ilhs; 
+    // // Create the array to store the MoM solution
+    // std::complex<double> *ilhs; 
 
-    if(cbfm)
-    {
-        #ifndef PARALLEL
+    // if(cbfm)
+    // {
+    //     #ifndef PARALLEL
 
-        // Allocate some memory for the MoM solution
-        ilhs = new std::complex<double>[reader.edges.size()]();
+    //     // Allocate some memory for the MoM solution
+    //     ilhs = new std::complex<double>[reader.edges.size()]();
 
-        // Perform the actual CBFM computation
-        performCBFM(reader.const_map,
-                    reader.label_map,
-                    reader.triangles,
-                    reader.edges,
-                    reader.nodes,
+    //     // Perform the actual CBFM computation
+    //     performCBFM(reader.const_map,
+    //                 reader.label_map,
+    //                 reader.triangles,
+    //                 reader.edges,
+    //                 reader.nodes,
 
-                    reader.excitations,
-                    ilhs);
+    //                 reader.excitations,
+    //                 ilhs);
 
         
-        // Write the solution to a .sol file
-        writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
-        std::cout << "SOLVER COMPLETE" << std::endl;
+    //     // Write the solution to a .sol file
+    //     writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
+    //     std::cout << "SOLVER COMPLETE" << std::endl;
 
-        // Cleanup
+    //     // Cleanup
 
-        delete [] ilhs;
-        #endif
-    }
-    else if (dgfm)
-    {
-        #ifndef PARALLEL
-        ilhs = new std::complex<double>[reader.edges.size()]();
-        performDGFM(reader.const_map,
-                    reader.label_map,
-                    reader.triangles,
-                    reader.edges,
-                    reader.nodes,
-                    reader.excitations,
-                    ilhs);
+    //     delete [] ilhs;
+    //     #endif
+    // }
+    // else if (dgfm)
+    // {
+    //     #ifndef PARALLEL
+    //     ilhs = new std::complex<double>[reader.edges.size()]();
+    //     performDGFM(reader.const_map,
+    //                 reader.label_map,
+    //                 reader.triangles,
+    //                 reader.edges,
+    //                 reader.nodes,
+    //                 reader.excitations,
+    //                 ilhs);
                   
-        // writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
-        delete [] ilhs;
-        #endif
+    //     // writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
+    //     delete [] ilhs;
+    //     #endif
         
-        #ifdef PARALLEL
-        if(rank == 0)
-        {
-            ilhs = new std::complex<double>[reader.edges.size()];
-        }
+    //     #ifdef PARALLEL
+    //     if(rank == 0)
+    //     {
+    //         ilhs = new std::complex<double>[reader.edges.size()];
+    //     }
 
-        mpiPerformDGFM( reader.const_map,
-                        reader.label_map,
-                        reader.triangles,
-                        reader.edges,
-                        reader.nodes,
-                        reader.excitations,
-                        ilhs); 
+    //     mpiPerformDGFM( reader.const_map,
+    //                     reader.label_map,
+    //                     reader.triangles,
+    //                     reader.edges,
+    //                     reader.nodes,
+    //                     reader.excitations,
+    //                     ilhs); 
 
-        if(rank == 0)
-        {
-            // Write the solution to a .sol file
-            writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
+    //     if(rank == 0)
+    //     {
+    //         // Write the solution to a .sol file
+    //         writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
             
-            // Cleanup
-            delete [] ilhs;
-        } 
+    //         // Cleanup
+    //         delete [] ilhs;
+    //     } 
 
-        #endif
-    }
-    else
-    {
-        #ifndef PARALLEL
+    //     #endif
+    // }
+    // else
+    // {
+    //     #ifndef PARALLEL
 
-        // Allocate some memory for MoM solution
-        ilhs = new std::complex<double>[reader.edges.size()];
+    //     // Allocate some memory for MoM solution
+    //     ilhs = new std::complex<double>[reader.edges.size()];
         
-        // Set rank to 0 for easier writing to file
-        int rank = 0;
-        #endif
+    //     // Set rank to 0 for easier writing to file
+    //     int rank = 0;
+    //     #endif
 
-        #ifdef PARALLEL
+    //     #ifdef PARALLEL
 
-        // Allocate memory for the MoM solution only on the root process
-        if(rank == 0)
-        {
-            ilhs = new std::complex<double>[reader.edges.size()];
-        }
-        #endif
+    //     // Allocate memory for the MoM solution only on the root process
+    //     if(rank == 0)
+    //     {
+    //         ilhs = new std::complex<double>[reader.edges.size()];
+    //     }
+    //     #endif
 
 
-        // TODO FIX FOR NEW IMPLEMENTATION OF EXCITATIONS AND LABELS
-        // Do the actual MoM computation
-        // mpiPerformMoM(reader.const_map,
-        //               reader.label_map,
-        //               reader.triangles,
-        //               reader.edges,
-        //               reader.nodes,
-        //               reader.excitations,
-        //               ilhs);      
+    //     // TODO FIX FOR NEW IMPLEMENTATION OF EXCITATIONS AND LABELS
+    //     // Do the actual MoM computation
+    //     // mpiPerformMoM(reader.const_map,
+    //     //               reader.label_map,
+    //     //               reader.triangles,
+    //     //               reader.edges,
+    //     //               reader.nodes,
+    //     //               reader.excitations,
+    //     //               ilhs);      
 
-        // if(rank == 0)
-        // {
-        //     // Write the solution to a .sol file
-        //     writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
-        //     std::cout << "SOLVER COMPLETE" << std::endl;
+    //     // if(rank == 0)
+    //     // {
+    //     //     // Write the solution to a .sol file
+    //     //     writeIlhsToFile(ilhs, reader.edges.size(), args::get(file_name_arg));   
+    //     //     std::cout << "SOLVER COMPLETE" << std::endl;
             
-        //     // Cleanup
-        //     delete ilhs;
-        // } 
+    //     //     // Cleanup
+    //     //     delete ilhs;
+    //     // } 
 
 
-    }
+    // }
 
 
     #ifdef PARALLEL
