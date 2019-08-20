@@ -110,3 +110,5 @@ TBD
 
 `python src/pre_processor/main.py`
 
+### <u>Compiling on WIN64</u>
+cmake -G "NMake Makefiles" -DCMAKE_C_COMPILER=icl -DCMAKE_CXX_COMPILER=icl ..

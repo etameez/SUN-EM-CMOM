@@ -82,7 +82,6 @@ int main(int argc, char **argv)
     }
     MoMFileReader reader(args::get(file_name_arg), domain_decomp);
 
-    
     // // Create the array to store the MoM solution
     std::complex<double> *ilhs; 
 
