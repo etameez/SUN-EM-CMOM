@@ -1,5 +1,4 @@
-set(main_sources
-        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
-target_sources(cmom PRIVATE ${main_sources})
-target_include_directories(cmom PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+add_subdirectory(dgfm_helpers)
+add_subdirectory(parallel_dgfm)
+add_subdirectory(serial_dgfm)

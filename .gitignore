@@ -20,3 +20,5 @@ src/gui/__pycache__/
 
 
 \.build/
+
+mbuild/

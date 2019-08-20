@@ -5,7 +5,6 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include <utmpx.h>
 
 #include "../../../data_structures/node.h"
 #include "../../../data_structures/edge.h"

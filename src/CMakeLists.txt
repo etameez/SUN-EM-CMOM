@@ -1,6 +1,8 @@
 
 add_subdirectory(data_structures)
 add_subdirectory(file_io)
+add_subdirectory(helpers)
+add_subdirectory(solvers)
 
 set(main_sources
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
