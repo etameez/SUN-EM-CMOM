@@ -8,7 +8,6 @@
 #include <chrono>
 
 #include <mpi.h>
-#include <omp.h>
 
 #include "../../../data_structures/node.h"
 #include "../../../data_structures/edge.h"

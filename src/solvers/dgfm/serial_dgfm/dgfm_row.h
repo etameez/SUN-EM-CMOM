@@ -5,9 +5,6 @@
 #include <complex>
 #include <map>
 #include <chrono>
-#include <omp.h>
-#include <utmpx.h>
-#include <mpi.h>
 
 #include "../dgfm_helpers/dgfm_helpers.h"
 #include "../dgfm_helpers/dgfm_weights.h"

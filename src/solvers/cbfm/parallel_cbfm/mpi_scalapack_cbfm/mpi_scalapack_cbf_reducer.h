@@ -1,4 +1,0 @@
-#ifndef MPI_SCALAPACK_CBF_REDUCER_H
-#define MPI_SCALAPACK_CBF_REDUCER_H
-
-#endif

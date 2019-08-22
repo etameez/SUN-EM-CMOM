@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <complex>
+#include <algorithm>
 
 extern "C"
 {

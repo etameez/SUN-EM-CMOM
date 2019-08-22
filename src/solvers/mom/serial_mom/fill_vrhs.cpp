@@ -29,7 +29,6 @@ void serialFillVrhs(std::map<std::string, std::string> &const_map,
 
         relative_ports.resize(excitations[domain_index].ports.size()); 
 
-
         for (int i = 0; i < relative_ports.size(); i++)
         {
             if (cbfm)
@@ -47,7 +46,6 @@ void serialFillVrhs(std::map<std::string, std::string> &const_map,
         
         for (int i = 0; i < label.edge_indices.size(); i++)
         {
-
             if (i == std::abs(relative_ports[port_index]))
             {
                 if (excitations[domain_index].ports[port_index] < 0)
@@ -57,11 +55,16 @@ void serialFillVrhs(std::map<std::string, std::string> &const_map,
                 }
                 else
                 {
+
                     vrhs[i] =   std::complex<double>(-1.0, 0.0) * 
                                 getVrhsValueForDeltaGap(edges[std::abs(excitations[domain_index].ports[port_index])].length,
                                                         excitations[domain_index].emag);
                 }
-                port_index++;
+
+                if (port_index != (relative_ports.size() - 1))
+                {
+                    port_index++;
+                }
             }
             else
             {
